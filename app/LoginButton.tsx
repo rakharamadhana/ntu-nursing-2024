@@ -4,7 +4,7 @@ import React from "react";
 
 const LoginButton = () => {
     const { data: session } = useSession();
-    console.log(session);
+    console.log(JSON.stringify(session));
     return (
         <div className="ml-auto flex gap-2">
             {session?.user ? (

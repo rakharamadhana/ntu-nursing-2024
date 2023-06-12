@@ -6,10 +6,12 @@ export async function POST(
   const body = await request.json();
   const { 
     name,
+    studentId,
     password,
    } = body;
   const user = {
     name: name,
+    studentId: studentId, 
     password: password,
   }
 

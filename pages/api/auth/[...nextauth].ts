@@ -1,50 +1,74 @@
-import NextAuth from 'next-auth';
+import NextAuth ,{ NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import bcrypt from 'bcrypt';
 
-export const authOptions = {
+import prisma from "@/app/libs/prismadb";
+
+export const authOptions: NextAuthOptions = {
     providers: [
         CredentialsProvider({
             name: "Credentials",
 
             credentials: {
-                name: { label: "Username", type: "text", placeholder: "B10831001" },
+                name: {label: "Username", type: "text", placeholder: "someone" },
+                studentId: { label: "Student ID", type: "text", placeholder: "10859001" },
                 password: { label: "Password", type: "password" },
             },
             async authorize(credentials, req) {
                 // Add logic here look up the user from the credentials supplied
-
-                const res = await fetch("http://localhost:3000/api/user/login", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        name: credentials?.name,
-                        password: credentials?.password,
-                    }),
-                });
-                const user = await res.json();
-                console.log(JSON.stringify(user))
-
-                if(user) {
-                    return user;
-                } else {
-                    return null;
+                if (!credentials?.studentId || !credentials.password) {
+                    throw new Error('Invalid credentials');
                 }
+
+                const user = await prisma.user.findUnique({
+                    where: {
+                      studentId: credentials.studentId,
+                    }
+                });
+
+                if (!user || !user?.hashedPassword) {
+                    throw new Error('Invalid credentials');
+                }
+
+                const isCorrectPassword = await bcrypt.compare(
+                    credentials.password,
+                    user.hashedPassword
+                );
+                if (!isCorrectPassword) {
+                    throw new Error('Invalid Password');
+                }
+
+                return user
             }
         })
     ],
+    secret: process.env.NEXTAUTH_SECRET,
 
-    // callbacks: {
-    //     async session({ session, token, user }) {
-    //         // Send properties to the client, like an access_token and user id from a provider
+    session: {
+        strategy: "jwt",
+    },
 
-    //     }
-    // }
+    callbacks: {
+        async jwt({token, user}: any) {
+            if(user) {
+                token.studentId = user.studentId
+            }
+            console.log("user :" + JSON.stringify(user))
+            console.log("token :" + JSON.stringify(token))
+            return token;
+        },
+        async session({ session, token, user }: any) {
+            // Send properties to the client, like an access_token and user id from a provider
+            session.user.studentId = token.studentId;
+            
+            return session
+        }
+    }
 
     // pages: {
     //     signIn: "/auth/signIn"
     // }
 }
 
-export default NextAuth(authOptions)
+export default NextAuth(authOptions);
