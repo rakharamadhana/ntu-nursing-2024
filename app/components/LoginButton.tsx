@@ -9,14 +9,14 @@ const LoginButton = () => {
         <div className="ml-auto flex gap-2">
             {session?.user ? (
                 <>
-                    <p className="text-sky-600"> {session.user.name}</p>
-                    <button className="text-blue-500" onClick={() => signOut()}>
-                        Sign Out
+                    <p className="text-neutral-500"> {session.user.name}</p>
+                    <button className="text-neutral-400" onClick={() => signOut()}>
+                        登出
                     </button>
                 </>
             ) : (
-                <button className="text-green-600" onClick={() => signIn()}>
-                    Sign In
+                <button className="text-neutral-400" onClick={() => signIn()}>
+                    登入
                 </button>
             )}
         </div>

@@ -54,9 +54,9 @@ export const authOptions: NextAuthOptions = {
         async jwt({token, user}: any) {
             if(user) {
                 token.studentId = user.studentId
+                console.log("user :" + JSON.stringify(user))
+                console.log("token :" + JSON.stringify(token))
             }
-            console.log("user :" + JSON.stringify(user))
-            console.log("token :" + JSON.stringify(token))
             return token;
         },
         async session({ session, token, user }: any) {
