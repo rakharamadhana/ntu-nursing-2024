@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 
-import prisma from "@/app/libs/prismadb";
+import prisma from "@/lib/prismadb";
 
 export async function POST(
   request: Request, 
@@ -9,7 +9,6 @@ export async function POST(
   const body = await request.json();
   const { 
     studentId,
-    name,
     password,
    } = body;
 
@@ -18,7 +17,6 @@ export async function POST(
    const user = await prisma.user.create({
     data: {
       studentId,
-      name,
       hashedPassword,
     }
   });

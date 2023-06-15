@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 
-import Heading from "./Heading";
+import Heading from "@/components/Heading";
 
 interface EmptyStateProps {
   title?: string;

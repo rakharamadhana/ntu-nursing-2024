@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import React from "react";
-import LoginButton from "@/app/components/LoginButton";
+import LoginButton from "@/components/LoginButton";
 import { useSession } from "next-auth/react";
 import { IconType } from "react-icons";
 import { AiOutlineHome } from "react-icons/ai"
