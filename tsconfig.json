@@ -24,6 +24,6 @@
     },
     "baseUrl": ".",  
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "types/**/*.ts"],
-  "exclude": ["node_modules"]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "types/**/*.ts", "coverage/googleSheet.mjs", "app/action/getFirstFormCompleteion.mts"],
+  "exclude": ["node_modules"],
 }

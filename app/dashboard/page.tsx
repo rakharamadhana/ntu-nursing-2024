@@ -1,8 +1,7 @@
 import EmptyState from "@/components/EmptyState";
-import { DashboardClient } from "./DashboardClient";
+import DashboardClient from "./DashboardClient";
 import getCurrentUser from "../action/getCurrentUser";
 
-//import DashboardClient from "./DashboardClient"
 
 const DashboardPage = async () => {
   const currentUser = await getCurrentUser();

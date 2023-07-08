@@ -11,27 +11,33 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { Separator } from "@/components/ui/separator"
-import { Switch } from "@/components/ui/switch"
 
 const notifications = [
   {
     title: "疼痛評估題目",
     description: "https://forms.gle/3MUZmibWJQjWCLEp6",
+    finish: false,
   },
   {
     title: "學習動機",
     description: "https://forms.gle/MupnNhhoXsN4zEgR8",
+    finish: false,
   },
   {
     title: "kolb學習風格",
     description: "/kolb",
+    finish: true,
   },
 ]
 
 type CardProps = React.ComponentProps<typeof Card>
 
-export function DashboardClient({ className, ...props }: CardProps) {
+const DashboardClient = ({ className, ...props }: CardProps) => {
+
+  function redirectToKolb() {
+    window.location.href = '/kolb';
+  }
+
   return (
     <Card className={cn("w-[380px]", className)} {...props}>
       <CardHeader>
@@ -45,7 +51,8 @@ export function DashboardClient({ className, ...props }: CardProps) {
               key={index}
               className="mb-4 grid grid-cols-[25px_1fr] items-start pb-4 last:mb-0 last:pb-0"
             >
-              <span className="flex h-2 w-2 translate-y-1 rounded-full bg-sky-500" />
+              {!notification.finish && <span className="flex h-2 w-2 translate-y-1 rounded-full bg-sky-500" />}
+              {notification.finish && <Check className="mr-2 h-5 w-5 text-green-600" />}
               <div className="space-y-1">
                 <p className="text-sm font-medium leading-none">
                   {notification.title}
@@ -61,11 +68,12 @@ export function DashboardClient({ className, ...props }: CardProps) {
         </div>
       </CardContent>
       <CardFooter>
-        <Button className="w-full" onClick={() => {}}>
+        <Button className="w-full" onClick={redirectToKolb}>
           <Check className="mr-2 h-4 w-4" /> 完成
         </Button>
       </CardFooter>
     </Card>
   )
-}
+};
 
+export default DashboardClient;
