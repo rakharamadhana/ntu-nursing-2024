@@ -32,13 +32,12 @@ export async function POST(request: Request) {
       for (let row of rows) {
         data.push(row.get("3. 學號"));
       }
-      console.log(doc.title);
-      console.log(data);
+      // console.log(doc.title);
+      // console.log(data);
 
       const result = data.includes(currentUser.studentId)
         ? "finish"
         : "unfinish";
-      console.log(result);
 
       return NextResponse.json(result);
     } catch (error: any) {

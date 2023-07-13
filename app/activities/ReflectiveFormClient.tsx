@@ -1,6 +1,6 @@
 "use client";
 import { Check, X } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import checkForm from "@/utils/checkForm";
 
@@ -20,6 +20,14 @@ const ReflectiveFormClient = () => {
     setFinish(formStatus);
     setChecked(true);
   };
+
+  useEffect(() => {
+    if (finish) {
+      setTimeout(() => {
+        redirect();
+      }, 1000);
+    }
+  }, [finish]);
 
   return (
     <div className="flex justify-center">

@@ -82,6 +82,14 @@ const DashboardClient = ({ className, ...props }: CardProps) => {
     window.location.href = '/materials';
   }
 
+  useEffect(() => {
+    if (finishFirstForm && finishSecondForm && finishKolbForm) {
+      setTimeout(() => {
+        redirect();
+      }, 1000);
+    }
+  }, [finishFirstForm, finishSecondForm, finishKolbForm]);
+
   return (
     <Card className={cn("w-[380px]", className)} {...props}>
       <CardHeader>

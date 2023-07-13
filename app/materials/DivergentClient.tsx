@@ -32,7 +32,7 @@ const DivergentClient = () => {
 
   if (os == "iOS") {
     return (
-      <div className="">
+      <div className="flex justify-center">
         <div className="bg-slate-100 h-auto mx-5 mt-[20vh] rounded-lg shadow-lg p-5 text-center text-lg gap-10 flex flex-col">
           <p>測驗結果分析完畢，教材為VR影片，請點擊下面按鈕</p>
           <a
@@ -40,11 +40,12 @@ const DivergentClient = () => {
             href="https://my.uptale.io/Experience/LaunchPage?id=GJS6a0qyXuEIdWHhpA"
             target="_blank"
             rel="noopener noreferrer"
+            onClick={handleClick}
           >
             前往學習教材
           </a>
           {clicked && (
-            <Link className="text-sm" href="/dashboard">
+            <Link className="text-sm" href="/activities">
               已經熟讀教材？請點擊
               <p className="inline underline text-red-300">這裡</p>前往學習活動
             </Link>
@@ -54,7 +55,7 @@ const DivergentClient = () => {
     );
   } else {
     return (
-      <div className="">
+      <div className="flex justify-center">
         <div className="bg-slate-100 h-auto mx-5 mt-[20vh] rounded-lg shadow-lg p-5 text-center text-lg gap-10 flex flex-col">
           <div className="text-[30px]">學習教材</div>
           <p>測驗結果分析完畢，教材為VR影片，請點擊下面按鈕</p>

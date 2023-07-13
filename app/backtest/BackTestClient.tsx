@@ -61,6 +61,14 @@ const BackTestClient = ({ className, ...props }: CardProps) => {
     window.location.href = '/finish';
   }
 
+  useEffect(() => {
+    if (finishFirstForm && finishSecondForm && finishThirdForm) {
+      setTimeout(() => {
+        redirect();
+      }, 1000);
+    }
+  }, [finishFirstForm, finishSecondForm, finishThirdForm]);
+
   return (
     <Card className={cn("w-[380px]", className)} {...props}>
       <CardHeader>
