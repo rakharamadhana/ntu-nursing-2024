@@ -21,7 +21,6 @@ export default function RootLayout({
         <Providers>
           <AppBar />
           <div className={"min-h-screen"}>{children}</div>
-          <div className='flex justify-center bg-slate-50 rounded-t-lg p-2 w-auto mx-[30vw]'>承英科技 2023</div>
         </Providers>
       </body>
     </html>
