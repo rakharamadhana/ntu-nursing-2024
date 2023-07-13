@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import getCurrentUser from "@/app/action/getCurrentUser";
+import getFullUser from "@/app/action/getFullUser";
 import prisma from "@/lib/prismadb";
 
 export async function POST(
@@ -22,4 +23,11 @@ export async function POST(
     // Return error response if no user found
     return NextResponse.json({ error: "User not found" });
   }
+}
+
+export async function GET(
+  request: Request,
+) {
+  const fullUser = await getFullUser();
+  return NextResponse.json(fullUser);
 }

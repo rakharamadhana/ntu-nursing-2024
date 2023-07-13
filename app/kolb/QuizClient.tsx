@@ -5,12 +5,11 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 // Components
-import QuestionCard from "@/components/QuestionCard/QuestionCard";
 import Button from "@/components/Button/Button";
 import compareAnswers from "./compareAnswers";
 // Types
 import { QuestionsState } from "@/types/quiz";
-
+// Hooks
 import useWindowSize from "@/app/hook/useWindowSize";
 
 type Props = {
@@ -109,8 +108,7 @@ const Quiz = ({ questions, totalQuestions }: Props) => {
     setOptions(optionsArray);
     console.log(kolb);
   }
-
-  const sizeHeightNow = size.height > 800 ? "mt-[30vh]" : "mt-[25vh]";
+  
   const sizeWidthNow =
     size.width > 1024 ? (size.height > 1000 ? "pt-40" : "") : "";
 

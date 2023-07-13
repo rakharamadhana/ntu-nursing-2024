@@ -11,81 +11,60 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import checkForm from "@/utils/checkForm";
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
+import checkForm from "@/utils/checkForm";
 
 type CardProps = React.ComponentProps<typeof Card>
 
-const checkKolb = async () => {
-  try {
-    const res = await fetch('/api/user/kolb', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-    .then(response => response.json())
-    .then(fullUser => {
-      console.log('Response of KOLB:', fullUser.kolb);
-      return fullUser?.kolb !== null && fullUser?.kolb !== undefined;
-    })
-    console.log(res)
-    return res
-  } catch (error: any) {
-    console.log(error)
-    return false
-  }
-}
-
-const DashboardClient = ({ className, ...props }: CardProps) => {
+const BackTestClient = ({ className, ...props }: CardProps) => {
   const [finishFirstForm, setFinishFirstForm] = useState(false);
   const [finishSecondForm, setFinishSecondForm] = useState(false);
-  const [finishKolbForm, setFinishKolbForm] = useState(false);
+  const [finishThirdForm, setFinishThirdForm] = useState(false);
   const [kolb, setKolb] = useState('');
   const [checked, setChecked] = useState(false);
   const { data: session } = useSession();
 
   const checkAllForms = async () => {
 
-    const firstFormStatus = await checkForm('10zc_emnqq3l7VvHrWXUvxnU9mRAiK90PX7zSfqKlozY', 1806269592);
-    setFinishFirstForm(firstFormStatus);
+    // const firstFormStatus = await checkForm('10zc_emnqq3l7VvHrWXUvxnU9mRAiK90PX7zSfqKlozY', 1806269592);
+    setFinishFirstForm(true);
 
-    const secondFormStatus = await checkForm('1FYiiLRMpdpzEC-3Y47IlYEcaT-b59D5wMp5hMzu5YQY', 1088244461);
+    const secondFormStatus = await checkForm('11e8by4T9867enL7FHH_-inZF-6jOp0RiNVdFC40I_bY', 256080489);
     setFinishSecondForm(secondFormStatus);
 
-    const kolbStatus = await checkKolb();
-    setFinishKolbForm(kolbStatus);
+    const thirdStatus = await checkForm('1zUphburapJepFt5ID7xPQBWDS-cNUq2Oy-E3HdTbq7Q', 282545185);
+    setFinishThirdForm(thirdStatus);
 
     setChecked(true);
   };
 
   const notifications = [
     {
-      title: "疼痛評估題目",
-      description: "https://forms.gle/3MUZmibWJQjWCLEp6",
+      title: "疼痛評估題目(後測)",
+      description: "https://forms.gle/1xeovHvLshEN3mrC8",
       finish: finishFirstForm,
     },
     {
-      title: "學習動機",
-      description: "https://forms.gle/MupnNhhoXsN4zEgR8",
+      title: "學習動機(後測)",
+      description: "https://forms.gle/fk1PyRcuRGGFtSaz8",
       finish: finishSecondForm,
     },
     {
-      title: "kolb學習風格",
-      description: "/kolb",
-      finish: finishKolbForm,
+      title: "課程滿意度",
+      description: "https://forms.gle/zdWTnWTRMK3pWRAh9",
+      finish: finishThirdForm,
     },
   ]
 
   function redirect() {
-    window.location.href = '/materials';
+    window.location.href = '/finish';
   }
 
   return (
     <Card className={cn("w-[380px]", className)} {...props}>
       <CardHeader>
-        <CardTitle>前測作業</CardTitle>
+        <CardTitle>後測作業</CardTitle>
         <CardDescription>總計三項</CardDescription>
       </CardHeader>
       <CardContent className="grid gap-4">
@@ -110,8 +89,8 @@ const DashboardClient = ({ className, ...props }: CardProps) => {
               </div>
             </div>
           ))}
-          {(finishFirstForm && finishSecondForm && finishKolbForm) ? 
-          <div className="text-sm text-gray-400 px-5">🏅恭喜你完成前測作業的部分，讓我們前往專屬你的護理疼痛評估教材吧！</div> 
+          {(finishFirstForm && finishSecondForm && finishThirdForm) ? 
+          <div className="text-sm text-gray-400 px-5">🏅恭喜你完成課程</div> 
           : <></>
           }     
         </div>
@@ -119,11 +98,11 @@ const DashboardClient = ({ className, ...props }: CardProps) => {
       <CardFooter>
         <Button className="w-full" onClick={async () => {
             await checkAllForms();
-            if (finishFirstForm && finishSecondForm && finishKolbForm) {
+            if (finishFirstForm && finishSecondForm && finishThirdForm) {
               redirect();
             }
           }}>
-          {(finishFirstForm && finishSecondForm && finishKolbForm) ? 
+          {(finishFirstForm && finishSecondForm && finishThirdForm) ? 
             <>
               <Check className="mr-2 h-5 w-5 text-white-600" />
               完成
@@ -137,4 +116,4 @@ const DashboardClient = ({ className, ...props }: CardProps) => {
   )
 };
 
-export default DashboardClient;
+export default BackTestClient;
