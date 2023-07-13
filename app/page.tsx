@@ -33,7 +33,7 @@ export default async function Home() {
 
   return (
     <div className="h-screen w-screen flex justify-center items-center bg-slate-200">
-      <div className="sm:shadow-xl px-8 pb-8 pt-12 sm:bg-white rounded-xl space-y-12">
+      <div className="sm:shadow-xl px-8 pb-8 pt-12 bg-slate-50 rounded-xl space-y-12">
         <h1 className="font-semibold text-2xl">用學號創建帳戶</h1>
         <RegisterForm />
         <p className="text-center"></p>
