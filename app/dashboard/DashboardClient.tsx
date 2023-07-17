@@ -107,7 +107,7 @@ const DashboardClient = ({ className, ...props }: CardProps) => {
               {(!notification.finish && checked) && <X className="mr-2 h-5 w-5 text-red-600" />}
               {notification.finish && <Check className="mr-2 h-5 w-5 text-green-600" />}
               <div className="space-y-1">
-                <Link href={notification.description}>
+                <Link href={notification.description} rel="noopener noreferrer" target="_blank">
                   <p className="text-sm font-medium leading-none">
                     {notification.title}
                   </p>

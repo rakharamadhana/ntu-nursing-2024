@@ -42,7 +42,7 @@ const ReflectiveFormClient = () => {
             {!finish && checked && <X className="mr-2 h-5 w-5 text-red-600" />}
             {finish && <Check className="mr-2 h-5 w-5 text-green-600" />}
             <div className="space-y-1">
-              <Link href="https://docs.google.com/forms/d/e/1FAIpQLSfbueXrEvQZT140iX2Qwp4tPqYYPsqTffvShbjn1fTiEVkFRw/viewform">
+              <Link href="https://docs.google.com/forms/d/e/1FAIpQLSfbueXrEvQZT140iX2Qwp4tPqYYPsqTffvShbjn1fTiEVkFRw/viewform" rel="noopener noreferrer" target="_blank">
                 <p className="text-sm font-medium leading-none">反思表單連結</p>
                 <p className="text-sm text-muted-foreground">
                   依照表單指示完成
