@@ -118,9 +118,9 @@ const DashboardClient = ({ className, ...props }: CardProps) => {
               </div>
             </div>
           ))}
-          {(finishFirstForm && finishSecondForm && finishKolbForm) ? 
+          {(finishFirstForm && finishSecondForm && finishKolbForm && checked) ? 
           <div className="text-sm text-gray-400 px-5">🏅恭喜你完成前測作業的部分，讓我們前往專屬你的護理疼痛評估教材吧！</div> 
-          : <></>
+          : <div className="text-sm text-gray-400 px-5">❌尚有未完成部分，加緊時間填完表單吧！</div>
           }     
         </div>
       </CardContent>

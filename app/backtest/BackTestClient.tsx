@@ -97,9 +97,9 @@ const BackTestClient = ({ className, ...props }: CardProps) => {
               </div>
             </div>
           ))}
-          {(finishFirstForm && finishSecondForm && finishThirdForm) ? 
+          {(finishFirstForm && finishSecondForm && finishThirdForm && checked) ? 
           <div className="text-sm text-gray-400 px-5">🏅恭喜你完成課程</div> 
-          : <></>
+          : <div className="text-sm text-gray-400 px-5">❌尚有未完成部分，加緊時間填完表單吧！</div>
           }     
         </div>
       </CardContent>
