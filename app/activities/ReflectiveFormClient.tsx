@@ -1,12 +1,16 @@
 "use client";
 import { Check, X } from "lucide-react";
 import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import checkForm from "@/utils/checkForm";
 
 const ReflectiveFormClient = () => {
   const [checked, setChecked] = useState(false);
   const [finish, setFinish] = useState(false);
+
+  const router = useRouter();
 
   const redirect = () => {
     window.location.href = "/backtest";
@@ -42,7 +46,11 @@ const ReflectiveFormClient = () => {
             {!finish && checked && <X className="mr-2 h-5 w-5 text-red-600" />}
             {finish && <Check className="mr-2 h-5 w-5 text-green-600" />}
             <div className="space-y-1">
-              <Link href="https://docs.google.com/forms/d/e/1FAIpQLSfbueXrEvQZT140iX2Qwp4tPqYYPsqTffvShbjn1fTiEVkFRw/viewform" rel="noopener noreferrer" target="_blank">
+              <Link
+                href="https://docs.google.com/forms/d/e/1FAIpQLSfbueXrEvQZT140iX2Qwp4tPqYYPsqTffvShbjn1fTiEVkFRw/viewform"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
                 <p className="text-sm font-medium leading-none">反思表單連結</p>
                 <p className="text-sm text-muted-foreground">
                   依照表單指示完成
@@ -51,21 +59,35 @@ const ReflectiveFormClient = () => {
             </div>
           </div>
         </div>
-        {finish ? (
-          <div
-            className="bg-slate-800 rounded-full text-slate-50 p-2 text-md align-middle mx-[60px] cursor-pointer"
-            onClick={() => redirect()}
+        <div className="flex justify-between space-x-4 w-full">
+          <Button
+            className="w-1/2 mt-5"
+            onClick={() => {
+              router.push("/materials");
+            }}
           >
-            完成
-          </div>
-        ) : (
-          <div
-            className="bg-slate-800 rounded-full text-slate-50 p-2 text-md align-middle mx-[60px] cursor-pointer"
-            onClick={() => handleCheck()}
-          >
-            檢查
-          </div>
-        )}
+            上一頁
+          </Button>
+          {finish ? (
+            <Button
+              className="w-1/2 mt-5"
+              onClick={() => {
+                redirect();
+              }}
+            >
+              完成
+            </Button>
+          ) : (
+            <Button
+              className="w-1/2 mt-5"
+              onClick={() => {
+                handleCheck();
+              }}
+            >
+              檢查
+            </Button>
+          )}
+        </div>
       </div>
     </div>
   );

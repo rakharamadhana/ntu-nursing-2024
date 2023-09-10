@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/card"
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import checkForm from "@/utils/checkForm";
 
 type CardProps = React.ComponentProps<typeof Card>
@@ -25,8 +26,11 @@ const BackTestClient = ({ className, ...props }: CardProps) => {
   const [checked, setChecked] = useState(false);
   const { data: session } = useSession();
 
+  const router = useRouter();
+
   const checkAllForms = async () => {
 
+    //等待取得權限
     // const firstFormStatus = await checkForm('10zc_emnqq3l7VvHrWXUvxnU9mRAiK90PX7zSfqKlozY', 1806269592);
     setFinishFirstForm(true);
 
@@ -103,8 +107,13 @@ const BackTestClient = ({ className, ...props }: CardProps) => {
           }     
         </div>
       </CardContent>
-      <CardFooter>
-        <Button className="w-full" onClick={async () => {
+      <CardFooter className="flex justify-between space-x-4 w-full">
+      <Button className="w-1/2" onClick={() => {
+          router.push('/activities')
+        }}>
+          上一頁
+        </Button>
+        <Button className="w-1/2" onClick={async () => {
             await checkAllForms();
             if (finishFirstForm && finishSecondForm && finishThirdForm) {
               redirect();

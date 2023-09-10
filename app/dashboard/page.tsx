@@ -1,12 +1,16 @@
 import EmptyState from "@/components/EmptyState";
 import DashboardClient from "./DashboardClient";
 import getCurrentUser from "../action/getCurrentUser";
-
+import { Button } from '@/components/ui/button'
 
 const DashboardPage = async () => {
   const currentUser = await getCurrentUser();
   if (!currentUser) {
-    return <EmptyState title="Unauthorized" subtitle="Please login" />;
+    return (
+      <>
+        <EmptyState title="尚未登入" subtitle="請至首頁註冊" button/>
+      </>
+    )
   }
 
   if (Number(currentUser.studentId) % 2 === 0) {

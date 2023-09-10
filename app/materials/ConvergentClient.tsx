@@ -1,10 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
+import  {Button} from "@/components/ui/button"
 
 const ConvergentClient = () => {
   const [clicked, setClicked] = useState(false);
+
+  const router = useRouter();
 
   const handleClick = () => {
     setClicked(true);
@@ -22,11 +26,19 @@ const ConvergentClient = () => {
         >
           前往學習教材
         </a>
-        {clicked && 
-          <Link className='text-sm' href='/activites'>
-            已經熟讀教材？請點擊<p className="inline underline text-red-300">這裡</p>前往學習活動
-          </Link>
-        }
+        {clicked && (
+            <div className="flex flex-col items-center">
+              <Link className="text-sm" href="/activities">
+                已經熟讀教材？請點擊
+                <p className="inline underline text-red-300">這裡</p>前往學習活動
+              </Link>
+              <Button className="w-1/2 mt-5" onClick={() => {
+                  router.push('/dashboard')
+              }}>
+                上一頁
+              </Button>
+            </div>
+          )}
       </div>
     </div>
   );

@@ -1,5 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 const getMobileOS = () => {
@@ -21,6 +23,8 @@ const getMobileOS = () => {
 const DivergentClient = () => {
   const [os, setOs] = useState("Other");
   const [clicked, setClicked] = useState(false);
+
+  const router = useRouter();
 
   useEffect(() => {
     setOs(getMobileOS());
@@ -45,10 +49,17 @@ const DivergentClient = () => {
             前往學習教材
           </a>
           {clicked && (
-            <Link className="text-sm" href="/activities">
-              已經熟讀教材？請點擊
-              <p className="inline underline text-red-300">這裡</p>前往學習活動
-            </Link>
+            <div className="flex flex-col items-center">
+              <Link className="text-sm" href="/activities">
+                已經熟讀教材？請點擊
+                <p className="inline underline text-red-300">這裡</p>前往學習活動
+              </Link>
+              <Button className="w-1/2 mt-5" onClick={() => {
+                  router.push('/dashboard')
+              }}>
+                上一頁
+              </Button>
+            </div>
           )}
         </div>
       </div>
@@ -69,10 +80,17 @@ const DivergentClient = () => {
             前往學習教材
           </a>
           {clicked && (
-            <Link className="text-sm" href="/activities">
-              已經熟讀教材？請點擊
-              <p className="inline underline text-red-300">這裡</p>前往學習活動
-            </Link>
+            <div className="flex flex-col items-center">
+              <Link className="text-sm" href="/activities">
+                已經熟讀教材？請點擊
+                <p className="inline underline text-red-300">這裡</p>前往學習活動
+              </Link>
+              <Button className="w-1/2 mt-5" onClick={() => {
+                  router.push('/dashboard')
+              }}>
+                上一頁
+              </Button>
+            </div>
           )}
         </div>
       </div>

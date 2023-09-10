@@ -3,17 +3,20 @@
 import { useRouter } from "next/navigation";
 
 import Heading from "@/components/Heading";
+import { Button } from "./ui/button";
 
 interface EmptyStateProps {
   title?: string;
   subtitle?: string;
   showReset?: boolean;
+  button?: boolean;
 }
 
 const EmptyState: React.FC<EmptyStateProps> = ({
   title = "No exact matches",
   subtitle = "Try changing or removing some of your filters.",
-  showReset
+  showReset,
+  button
 }) => {
   const router = useRouter();
 
@@ -33,6 +36,13 @@ const EmptyState: React.FC<EmptyStateProps> = ({
         title={title}
         subtitle={subtitle}
       />
+      <div className="pt-5">
+        {button && 
+          <Button className="w-[150px] text-lg" size="lg" onClick={() => router.push("/")}>
+          回首頁
+          </Button>
+        }
+      </div>
     </div>
    );
 }

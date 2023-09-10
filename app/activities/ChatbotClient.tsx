@@ -1,10 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import { Button } from "@/components/ui/button"
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const ChatbotClient = () => {
   const [clicked, setClicked] = useState(false);
+
+  const router = useRouter();
 
   const handleClick = () => {
     setClicked(true);
@@ -22,11 +26,19 @@ const ChatbotClient = () => {
         >
           😁開始
         </a>
-        {clicked && 
-          <Link className='text-sm' href='/backtest'>
-            已經完成？請點擊<p className="inline underline text-red-300">這裡</p>前往後測作業
-          </Link>
-        }
+        {clicked && (
+            <div className="flex flex-col items-center">
+              <Link className="text-sm" href="/activities">
+                已經熟讀教材？請點擊
+                <p className="inline underline text-red-300">這裡</p>前往學習活動
+              </Link>
+              <Button className="w-1/2 mt-5" onClick={() => {
+                  router.push('/materials')
+              }}>
+                上一頁
+              </Button>
+            </div>
+          )}
       </div>
     </div>
   );
