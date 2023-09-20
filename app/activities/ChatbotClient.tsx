@@ -28,9 +28,9 @@ const ChatbotClient = () => {
         </a>
         {clicked && (
             <div className="flex flex-col items-center">
-              <Link className="text-sm" href="/activities">
+              <Link className="text-sm" href="/backtest">
                 已經熟讀教材？請點擊
-                <p className="inline underline text-red-300">這裡</p>前往學習活動
+                <p className="inline underline text-red-300">這裡</p>前往後測題目
               </Link>
               <Button className="w-1/2 mt-5" onClick={() => {
                   router.push('/materials')

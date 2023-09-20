@@ -16,7 +16,10 @@ const DashboardPage = async () => {
   }
 
   // Even Number
-  if (Number(currentUser.studentId) % 2 === 0) {
+  const lastChar = currentUser.studentId.charAt(currentUser.studentId.length - 1);
+  const isEven = Number(lastChar) % 2 === 0;
+
+  if (isEven) {
     switch (fullUser.kolb) {
       case '收斂型':
         return (
@@ -48,7 +51,7 @@ const DashboardPage = async () => {
   }
 
   // Odd Number
-  if (Number(currentUser.studentId) % 2 === 1) {
+  if (!isEven) {
     switch (fullUser.kolb) {
       case '收斂型':
         return (

@@ -9,7 +9,10 @@ const BackTestPage = async () => {
     return <EmptyState title="Unauthorized" subtitle="Please login" />;
   }
 
-  if (Number(currentUser.studentId) % 2 === 0) {
+  const lastChar = currentUser.studentId.charAt(currentUser.studentId.length - 1);
+  const isEven = Number(lastChar) % 2 === 0;
+
+  if (isEven) {
     return (
       <div className="flex flex-col items-center pt-10">
           <BackTestClient className=""/>
@@ -17,7 +20,7 @@ const BackTestPage = async () => {
     );
   }
 
-  if (Number(currentUser.studentId) % 2 === 1) {
+  if (!isEven) {
     return (
       <div className="flex flex-col items-center pt-10">
           <BackTestClient className=""/>
