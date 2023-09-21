@@ -112,74 +112,95 @@ const Quiz = ({ questions, totalQuestions }: Props) => {
   const sizeWidthNow =
     size.width > 1024 ? (size.height > 1000 ? "pt-40" : "") : "";
 
+  if (!finish) {
+    return (
+      <div className=" text-black text-center justify-center sm:px-10 ">
+        <div className={sizeWidthNow}>
+          <div className="rounded-lg bg-slate-100 px-10 gap-5 sm:shadow-lg flex flex-col justify-center">
+            <p className="text-black font-bold text-[16px] pt-5">
+              當前第 {currentIndex} 題 共 {totalQuestions} 題
+            </p>
+            <p className="rounded-lg text-[20px] bg-slate-50 py-5 mt-5 px-5 w-[400px] self-center">
+              {questions[currentIndex - 1].question}
+            </p>
+            <div className="flex flex-row justify-center">
+              <div className="flex flex-col justify-evenly text-gray-400">
+                <p>最像</p>
+                <Image src="/up.png" alt="up" width={50} height={50}></Image>
+                <Image src="/down.png" alt="down" width={50} height={50}></Image>
+                <p>最不像</p>
+              </div>
+            <div className="p-10 flex flex-col justify-center">
+              <DragDropContext onDragEnd={handleOnDragEnd}>
+                <p className="text-gray-400">選項拖曳區</p>
+                <div className="flex justify-center">
+                <Droppable droppableId="items">
+                  {(provided, snapshot) => (
+                    <ul {...provided.droppableProps} 
+                      ref={provided.innerRef} 
+                      style={getListStyle(snapshot.isDraggingOver)}
+                      className="rounded-lg justify-center "
+                    >
+                      {options.map((option, index) => (
+                        <Draggable key={option} draggableId={option} index={index} >
+                          {(provided, snapshot) => (
+                            <li
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                              {...provided.dragHandleProps}
+                              style={getItemStyle(
+                                snapshot.isDragging,
+                                provided.draggableProps.style
+                              )}
+                              className={snapshot.isDragging ? 
+                                "shadow-lg rounded-full m-4 text-slate-200" 
+                                : "shadow-lg rounded-full m-4 text-slate-200"}
+                            >
+                              {option}
+                            </li>
+                          )}
+                        </Draggable>
+                      ))}
+                      {provided.placeholder}
+                    </ul>
+                  )}
+                </Droppable>
+                </div>
+              </DragDropContext>
+            </div>
+            </div>
+            <div className="flex justify-center gap-6 pb-10">
+              {!finish && <Button text="上一題" onClick={() => handleChangeQuestion(-1)} />}
+              {!finish && <Button
+                text={currentIndex === totalQuestions ? "結束" : "下一題"}
+                onClick={
+                  currentIndex === totalQuestions
+                    ? () => {
+                      handleEndQuiz();
+                    }
+                    : () => handleChangeQuestion(1)
+                }
+              />}
+              {finish && <Button text="上傳資料" 
+                onClick={() => {
+                  update(kolb);
+                  router.push('/dashboard')
+                }} />}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className=" text-black text-center justify-center sm:px-10 ">
       <div className={sizeWidthNow}>
         <div className="rounded-lg bg-slate-100 px-10 gap-5 sm:shadow-lg flex flex-col justify-center">
-          <p className="text-black font-bold text-[16px] pt-5">
-            當前第 {currentIndex} 題 共 {totalQuestions} 題
+          <p className="text-black font-bold text-[16px] py-10">
+              測試結果為：{kolb}
           </p>
-          <p className="rounded-lg text-[20px] bg-slate-50 py-5 mt-5 px-5 w-[400px] self-center">
-            {questions[currentIndex - 1].question}
-          </p>
-          <div className="flex flex-row justify-center">
-            <div className="flex flex-col justify-evenly text-gray-400">
-              <p>最像</p>
-              <Image src="/up.png" alt="up" width={50} height={50}></Image>
-              <Image src="/down.png" alt="down" width={50} height={50}></Image>
-              <p>最不像</p>
-            </div>
-          <div className="p-10 flex flex-col justify-center">
-            <DragDropContext onDragEnd={handleOnDragEnd}>
-              <p className="text-gray-400">選項拖曳區</p>
-              <div className="flex justify-center">
-              <Droppable droppableId="items">
-                {(provided, snapshot) => (
-                  <ul {...provided.droppableProps} 
-                    ref={provided.innerRef} 
-                    style={getListStyle(snapshot.isDraggingOver)}
-                    className="rounded-lg justify-center "
-                  >
-                    {options.map((option, index) => (
-                      <Draggable key={option} draggableId={option} index={index} >
-                        {(provided, snapshot) => (
-                          <li
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                            style={getItemStyle(
-                              snapshot.isDragging,
-                              provided.draggableProps.style
-                            )}
-                            className={snapshot.isDragging ? 
-                              "shadow-lg rounded-full m-4 text-slate-200" 
-                              : "shadow-lg rounded-full m-4 text-slate-200"}
-                          >
-                            {option}
-                          </li>
-                        )}
-                      </Draggable>
-                    ))}
-                    {provided.placeholder}
-                  </ul>
-                )}
-              </Droppable>
-              </div>
-            </DragDropContext>
-          </div>
-          </div>
           <div className="flex justify-center gap-6 pb-10">
-            {!finish && <Button text="上一題" onClick={() => handleChangeQuestion(-1)} />}
-            {!finish && <Button
-              text={currentIndex === totalQuestions ? "結束" : "下一題"}
-              onClick={
-                currentIndex === totalQuestions
-                  ? () => {
-                    handleEndQuiz();
-                  }
-                  : () => handleChangeQuestion(1)
-              }
-            />}
             {finish && <Button text="上傳資料" 
               onClick={() => {
                 update(kolb);
@@ -190,6 +211,7 @@ const Quiz = ({ questions, totalQuestions }: Props) => {
       </div>
     </div>
   );
+
 };
 
 export default Quiz;
