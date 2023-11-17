@@ -3,15 +3,18 @@ import { NextResponse } from "next/server";
 import prisma from "@/lib/prismadb";
 
 interface Params {
-    id?: number;
+    id: number;
   }
 
 export async function GET(
     request: Request,
     { params }: { params: Params }
 ) {
-  const { "id": messengerId } = params;
-  console.log(params)
+  const { id } = params;
+  let messengerId;
+  if (typeof id !== "number") {
+    messengerId = +id[0]
+  }
 
   let chatfuel = await prisma.chatfuel.findUnique({
     where: { messengerId },
