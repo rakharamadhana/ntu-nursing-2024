@@ -28,3 +28,18 @@ export async function POST(request: Request) {
 
   return NextResponse.json(chatfuel);
 }
+
+export async function GET(request: Request) {
+  const body = await request.json();
+  const { "messenger user id": messengerId } = body;
+
+  let chatfuel = await prisma.chatfuel.findUnique({
+    where: { messengerId },
+  });
+
+  if (chatfuel) {
+    return NextResponse.json(chatfuel);
+  }
+
+  return NextResponse.json('sorry not found');
+}
