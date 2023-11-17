@@ -11,6 +11,7 @@ export async function GET(
     { params }: { params: Params }
 ) {
   const { "id": messengerId } = params;
+  console.log(params)
 
   let chatfuel = await prisma.chatfuel.findUnique({
     where: { messengerId },
