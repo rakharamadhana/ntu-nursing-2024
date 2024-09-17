@@ -15,9 +15,6 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  // Log server-side environment variables
-  console.log('DATABASE_URL:', process.env.DATABASE_URL);
-
   return (
     <html lang="en">
       <body className={inter.className + " bg-slate-200"}>
