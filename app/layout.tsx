@@ -6,8 +6,8 @@ import Providers from "@/components/Providers"
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
-  title: 'NTU nurse',
-  description: 'Ying-Kai Liao Provided',
+  title: 'NTU Nurse',
+  description: 'Ying-Kai Liao Provided | Modified by Rakha Ramadhana',
 }
 
 export default function RootLayout({
