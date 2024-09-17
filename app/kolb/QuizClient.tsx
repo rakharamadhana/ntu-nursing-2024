@@ -126,8 +126,7 @@ const Quiz = ({ questions, totalQuestions }: Props) => {
             <div className="flex flex-row justify-center">
               <div className="flex flex-col justify-evenly text-gray-400">
                 <p>最像</p>
-                <Image src="/up.png" alt="up" width={50} height={50}></Image>
-                <Image src="/down.png" alt="down" width={50} height={50}></Image>
+                <Image src="/down.png" alt="down" width={100} height={100}></Image>
                 <p>最不像</p>
               </div>
             <div className="p-10 flex flex-col justify-center">
