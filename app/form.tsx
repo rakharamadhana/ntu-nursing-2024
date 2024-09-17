@@ -16,6 +16,7 @@ export const RegisterForm = () => {
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log(process.env.DATABASE_URL);
 
     try {
       const res = await fetch("/api/user/register", {
