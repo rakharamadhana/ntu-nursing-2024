@@ -13,7 +13,8 @@ const ReflectiveFormClient = () => {
   const router = useRouter();
 
   const redirect = () => {
-    window.location.href = "/backtest";
+    // window.location.href = "/backtest";
+    window.location.href = "/dashboard";
   };
 
   const handleCheck = async () => {
@@ -63,7 +64,7 @@ const ReflectiveFormClient = () => {
           <Button
             className="w-1/2 mt-5"
             onClick={() => {
-              router.push("/materials");
+              router.push("/activities");
             }}
           >
             上一頁

@@ -127,7 +127,7 @@ const DashboardClient = ({ className, ...props }: CardProps) => {
           ))}
           {finishKolbForm && checked ? (
             <div className="text-sm text-gray-400 px-5">
-              🏅恭喜你完成前測作業的部分，讓我們前往專屬你的護理疼痛評估教材吧！
+              🏅恭喜你完成前測作業的部分，讓我們前往專屬你的團隊會議與家庭會議教材吧！
             </div>
           ) : (
             <div className="text-sm text-gray-400 px-5">
