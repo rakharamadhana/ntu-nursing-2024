@@ -2,13 +2,17 @@ import './globals.css';
 import { Inter } from 'next/font/google';
 import AppBar from "@/components/AppBar";
 import Providers from "@/components/Providers";
-import Head from 'next/head';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
     title: 'NTU Nurse',
     description: 'Ying-Kai Liao Provided | Modified by Rakha Ramadhana',
+    generator: "Next.js",
+    manifest: "/manifest.json",
+    keywords: ["ntu-nurse"],
+    viewport:
+        "minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, viewport-fit=cover",
 };
 
 export default function RootLayout({
@@ -18,9 +22,6 @@ export default function RootLayout({
 }) {
     return (
         <html lang="en">
-        <Head>
-            <link rel="manifest" href="/manifest.json" />
-        </Head>
         <body className={inter.className + " bg-slate-200"}>
         <Providers>
             <AppBar />
