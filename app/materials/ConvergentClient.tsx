@@ -21,7 +21,7 @@ const ConvergentClient = () => {
         <p>測驗結果分析完畢，教材為投影片，請點擊下面按鈕</p>
         <a
           className="bg-slate-800 rounded-full text-slate-50 p-3 text-[20px] align-middle"
-          href="#"
+          href="https://m.me/460286867158768?ref=PPT"
           target="_blank" rel="noopener noreferrer" onClick={() => handleClick()}
         >
           前往學習教材

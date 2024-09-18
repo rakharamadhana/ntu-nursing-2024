@@ -75,7 +75,8 @@ const DashboardClient = ({ className, ...props }: CardProps) => {
   ];
 
   function redirect() {
-    window.location.href = "/materials";
+    // window.location.href = "/materials";
+    window.location.href = "/activities";
   }
 
   useEffect(() => {
