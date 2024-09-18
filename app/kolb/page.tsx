@@ -31,7 +31,7 @@ const getQuestions = async () => {
       },
       {
         question: '當我學習時：',
-        answerA: '我喜歡看到時做的成果',
+        answerA: '我喜歡看到實作的成果',
         answerB: '我喜歡觀念及理論',
         answerC: '我在行動之前會先停下來想一想',
         answerD: '我感覺全心全意投入學習中'
