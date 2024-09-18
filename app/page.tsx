@@ -11,10 +11,10 @@ export default async function Home() {
     return (
       <div className="h-[90vh] w-screen flex justify-center items-center bg-slate-200 flex-col">
         <div className="flex justify-center items-center bg-slate-50 flex-col h-auto rounded-lg m-5 p-5">
-          <div className="text-[20px] bold ">護理疼痛評估線上課程</div>
+          <div className="text-[20px] bold ">團隊會議與家庭會議線上課程</div>
           <div className="p-5">
-            歡迎同學們來此學習護理疼痛評估線上課程，
-            此堂課護理疼痛評估著重在前兩階段，評估以及確認問題，
+            歡迎同學們來此學習團隊會議與家庭會議線上課程，
+            此堂課團隊會議與家庭會議著重在前兩階段，評估以及確認問題，
             後半段的處置與照護及持續照護將不在此範圍內，
             接著會先請同學進行三份問卷及一份測驗題填寫，
             問卷包含：學習動機、學習滿意度以及學習風格，
