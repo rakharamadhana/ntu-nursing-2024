@@ -40,8 +40,8 @@ const checkKolb = async () => {
 };
 
 const DashboardClient = ({ className, ...props }: CardProps) => {
-  const [finishFirstForm, setFinishFirstForm] = useState(false);
-  const [finishSecondForm, setFinishSecondForm] = useState(false);
+  // const [finishFirstForm, setFinishFirstForm] = useState(false);
+  // const [finishSecondForm, setFinishSecondForm] = useState(false);
   const [finishKolbForm, setFinishKolbForm] = useState(false);
   const [checked, setChecked] = useState(false);
   const router = useRouter();
@@ -52,13 +52,13 @@ const DashboardClient = ({ className, ...props }: CardProps) => {
       "10zc_emnqq3l7VvHrWXUvxnU9mRAiK90PX7zSfqKlozY",
       1806269592
     );
-    setFinishFirstForm(firstFormStatus);
+    // setFinishFirstForm(firstFormStatus);
 
     const secondFormStatus = await checkForm(
       "1FYiiLRMpdpzEC-3Y47IlYEcaT-b59D5wMp5hMzu5YQY",
       1088244461
     );
-    setFinishSecondForm(secondFormStatus);
+    // setFinishSecondForm(secondFormStatus);
 
     const kolbStatus = await checkKolb();
     setFinishKolbForm(kolbStatus);
@@ -79,12 +79,12 @@ const DashboardClient = ({ className, ...props }: CardProps) => {
   }
 
   useEffect(() => {
-    if (finishFirstForm && finishSecondForm && finishKolbForm) {
+    if (finishKolbForm) {
       setTimeout(() => {
         redirect();
       }, 1000);
     }
-  }, [finishFirstForm, finishSecondForm, finishKolbForm]);
+  }, [finishKolbForm]);
 
   return (
     <Card className={cn("w-[380px]", className)} {...props}>
@@ -124,7 +124,7 @@ const DashboardClient = ({ className, ...props }: CardProps) => {
               </div>
             </div>
           ))}
-          {finishFirstForm && finishSecondForm && finishKolbForm && checked ? (
+          {finishKolbForm && checked ? (
             <div className="text-sm text-gray-400 px-5">
               🏅恭喜你完成前測作業的部分，讓我們前往專屬你的護理疼痛評估教材吧！
             </div>
@@ -145,12 +145,12 @@ const DashboardClient = ({ className, ...props }: CardProps) => {
           className="w-1/2"
           onClick={async () => {
             await checkAllForms();
-            if (finishFirstForm && finishSecondForm && finishKolbForm) {
+            if (finishKolbForm) {
               redirect();
             }
           }}
         >
-          {finishFirstForm && finishSecondForm && finishKolbForm ? (
+          {finishKolbForm ? (
             <>
               <Check className="mr-2 h-5 w-5 text-white-600" />
               完成
