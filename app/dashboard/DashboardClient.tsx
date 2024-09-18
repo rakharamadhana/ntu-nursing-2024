@@ -68,16 +68,6 @@ const DashboardClient = ({ className, ...props }: CardProps) => {
 
   const notifications = [
     {
-      title: "疼痛評估題目",
-      description: "https://forms.gle/3MUZmibWJQjWCLEp6",
-      finish: finishFirstForm,
-    },
-    {
-      title: "學習動機",
-      description: "https://forms.gle/MupnNhhoXsN4zEgR8",
-      finish: finishSecondForm,
-    },
-    {
       title: "kolb學習風格",
       description: "/kolb",
       finish: finishKolbForm,
