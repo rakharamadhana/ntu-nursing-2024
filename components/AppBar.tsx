@@ -10,12 +10,13 @@ import { AiOutlineHome } from "react-icons/ai"
 const AppBar = () => {
     const { data: session } = useSession();
     return (
-        <div className="bg-gradient-to-l from-slate-100 to-slate-200 p-2 flex gap-5 shadow-md">
+        <div className="bg-gradient-to-l from-slate-100 to-slate-300 p-2 flex gap-5 shadow-xl">
             <Link href={"/"} className="flex flex-row items-center px-4">
-                <AiOutlineHome />
+                <AiOutlineHome/>
             </Link>
-            <LoginButton />
+            <LoginButton/>
         </div>
+
     )
 };
 

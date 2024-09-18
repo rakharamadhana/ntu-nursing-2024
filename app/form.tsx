@@ -63,7 +63,7 @@ export const RegisterForm = () => {
             type="password"
           />
         </div>
-        {error && <Alert>{error}</Alert>}
+        {error && <Alert variant="destructive">{error}</Alert>}
         <div className="w-full">
           <div className="divide-y divide-dashed divide-slate-300">
             <Button className="w-full mb-5" size="lg">
