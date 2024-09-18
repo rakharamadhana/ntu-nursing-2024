@@ -41,7 +41,7 @@ const DivergentClient = () => {
           <p>測驗結果分析完畢，教材為VR影片，請點擊下面按鈕</p>
           <a
             className="bg-slate-800 rounded-full text-slate-50 p-3 text-[20px] align-middle"
-            href="https://my.uptale.io/Experience/LaunchPage?id=GJS6a0qyXuEIdWHhpA"
+            href="#"
             target="_blank"
             rel="noopener noreferrer"
             onClick={handleClick}
@@ -72,7 +72,7 @@ const DivergentClient = () => {
           <p>測驗結果分析完畢，教材為VR影片，請點擊下面按鈕</p>
           <a
             className="bg-slate-800 rounded-full text-slate-50 p-3 text-[20px] align-middle"
-            href="https://youtu.be/zIMYYBMuFC4"
+            href="#"
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => handleClick()}

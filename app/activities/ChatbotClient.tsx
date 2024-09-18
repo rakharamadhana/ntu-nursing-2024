@@ -21,7 +21,7 @@ const ChatbotClient = () => {
         <p>接下來活動為messenger聊天機器人互動環節，準備好後就開始囉！</p>
         <a
           className="bg-slate-800 rounded-full text-slate-50 p-3 text-[20px] align-middle"
-          href="https://m.me/108304355624255?ref=Website"
+          href="https://m.me/460286867158768?ref=Website"
           target="_blank" rel="noopener noreferrer" onClick={() => handleClick()}
         >
           😁開始
