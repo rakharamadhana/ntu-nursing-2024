@@ -26,6 +26,7 @@ model User {
 model Chatfuel {
   id              String @id @default(auto()) @map("_id") @db.ObjectId
   messengerId     Int @unique
+  studentId       String @unique
   correct         Int @default(0)
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
