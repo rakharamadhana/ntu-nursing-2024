@@ -44,37 +44,40 @@ export async function POST(request: Request) {
 }
 
 // GET method - fetching the correct answers for a specific student and messenger ID
-// GET method - fetching the correct answers for a specific student and messenger ID
 export async function GET(request: Request) {
   const apiKey = request.headers.get("x-api-key");
 
+  // Check API Key for authorization
   if (!apiKey || apiKey !== SECRET_KEY) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  // Read the JSON body
-  const body = await request.json();
-  const { messengerId, studentId } = body;
+  // Extract query parameters from the request URL
+  const { searchParams } = new URL(request.url);
+  const studentId = searchParams.get("studentId");
 
-  // Ensure messengerId is not null and is an integer
-  if (!messengerId || !studentId) {
-    return NextResponse.json({ error: "Valid messengerId and studentId are required" }, { status: 400 });
+  // Ensure studentId parameter is present
+  if (!studentId) {
+    return NextResponse.json({ error: "Valid studentId is required" }, { status: 400 });
   }
 
-  const parsedMessengerId = parseInt(messengerId, 10);
-
-  if (isNaN(parsedMessengerId)) {
-    return NextResponse.json({ error: "Valid messengerId is required" }, { status: 400 });
-  }
-
-  const chatfuel = await prisma.chatfuel.findFirst({
-    where: { messengerId: parsedMessengerId, studentId },
-    select: { correct: true }, // Only select the 'correct' field
+  // Fetch the record from the database using Prisma
+  const user = await prisma.user.findFirst({
+    where: { studentId },
+    select: {
+      studentId: true, // Fetch the studentId
+      kolb: true,      // Fetch the kolb field
+    },
   });
 
-  if (!chatfuel) {
+  // If no record is found, return a 404 error
+  if (!user) {
     return NextResponse.json({ error: "Record not found" }, { status: 404 });
   }
 
-  return NextResponse.json({ correct: chatfuel.correct });
+  // Return the studentId and kolb from the database
+  return NextResponse.json({
+    studentId: user.studentId,
+    kolb: user.kolb,
+  });
 }
