@@ -75,9 +75,22 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "Record not found" }, { status: 404 });
   }
 
-  // Return the studentId and kolb from the database
+  // Extract numeric part from studentId
+  const numericPart = studentId.replace(/\D/g, ''); // Remove non-digit characters
+
+  // Check if there are any numeric characters
+  if (numericPart.length === 0) {
+    return NextResponse.json({ error: "No numeric part in studentId" }, { status: 400 });
+  }
+
+  // Convert to a number and check if odd or even
+  const number = parseInt(numericPart, 10);
+  const type = number % 2 === 0 ? 'even' : 'odd';
+
+  // Return the studentId, kolb, and type from the database
   return NextResponse.json({
     studentId: user.studentId,
     kolb: user.kolb,
+    type: type, // Return the determined type
   });
 }
