@@ -44,6 +44,7 @@ export async function POST(request: Request) {
 }
 
 // GET method - fetching the correct answers for a specific student and messenger ID
+// GET method - fetching the correct answers for a specific student and messenger ID
 export async function GET(request: Request) {
   const apiKey = request.headers.get("x-api-key");
 
@@ -51,9 +52,9 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { searchParams } = new URL(request.url);
-  const messengerId = searchParams.get("messengerId");
-  const studentId = searchParams.get("studentId");
+  // Read the JSON body
+  const body = await request.json();
+  const { messengerId, studentId } = body;
 
   // Ensure messengerId is not null and is an integer
   if (!messengerId || !studentId) {
