@@ -48,7 +48,7 @@ export async function POST(request: Request) {
           ? "finish"
           : "unfinish";
 
-      return NextResponse.json(result);
+      return NextResponse.json({ result: result, studentId: currentUser.studentId }, { status: 200 });
     } catch (error: any) {
       console.log(error);
       return NextResponse.json({ error: "Google Sheets Error", details: error.message });
