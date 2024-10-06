@@ -45,8 +45,8 @@ export async function POST(request: Request) {
       }
 
       const result = data.includes(currentUser.studentId)
-          ? "finish"
-          : "unfinish";
+          ? "完全✅"
+          : "還沒❌";
 
       return NextResponse.json({ result: result, studentId: currentUser.studentId }, { status: 200 });
     } catch (error: any) {
