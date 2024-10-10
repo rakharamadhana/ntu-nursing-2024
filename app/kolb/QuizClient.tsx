@@ -1,15 +1,12 @@
 "use client";
 
-import React, {useCallback, useState} from "react";
-import {useRouter} from "next/navigation";
+import React, { useCallback, useState } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
-import {reorder} from '@atlaskit/pragmatic-drag-and-drop/reorder';
-// Components
+import { reorder } from '@atlaskit/pragmatic-drag-and-drop/reorder';
 import Button from "@/components/Button/Button";
 import compareAnswers from "./compareAnswers";
-// Types
-import {QuestionsState} from "@/types/quiz";
-// Hooks
+import { QuestionsState } from "@/types/quiz";
 import useWindowSize from "@/app/hook/useWindowSize";
 
 type Props = {
@@ -19,22 +16,17 @@ type Props = {
 
 const grid = 8;
 
-const getItemStyle = (isDragging:any, draggableStyle:any) => ({
-  // some basic styles to make the items look a bit nicer
+const getItemStyle = (isDragging: any, draggableStyle: any, isDraggingOver: boolean) => ({
   userSelect: "none",
   padding: grid * 2,
-
-  // change background colour if dragging
-  background: isDragging ? "rgb(34 211 238)" : "rgb(8 145 178)",
-
-  // styles we need to apply on draggables
-  ...draggableStyle
+  background: isDragging ? "rgb(34 211 238)" : isDraggingOver ? "rgba(34, 211, 238, 0.5)" : "rgb(8 145 178)",
+  ...draggableStyle,
 });
 
 const getListStyle = (isDraggingOver: any) => ({
   background: isDraggingOver ? "rgb(248 250 252)" : "rgb(248 250 252)",
   padding: grid,
-  width: 250
+  width: 250,
 });
 
 const Quiz = ({ questions, totalQuestions }: Props) => {
@@ -43,19 +35,20 @@ const Quiz = ({ questions, totalQuestions }: Props) => {
   const [options, setOptions] = useState(questions[0].answers);
   const [userAnswers, setUserAnswers] = useState<Record<number, string[]>>({});
   const [finish, setFinish] = useState(false);
+  const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const size = useWindowSize();
   const router = useRouter();
+  const [isDragging, setIsDragging] = useState(false);
 
   const update = async (type: string) => {
-    console.log("Updating with kolb type:", kolb);
     try {
       const res = await fetch('/api/user/kolb', {
         method: 'POST',
         body: JSON.stringify({ kolb }),
         headers: { 'Content-Type': 'application/json' },
       });
-      const data = await res.json(); // Assuming you want to check the response
-      console.log("API response:", data);
+      const data = await res.json();
     } catch (error: any) {
       console.error("Error updating data:", error);
     }
@@ -64,46 +57,52 @@ const Quiz = ({ questions, totalQuestions }: Props) => {
   const handleChangeQuestion = (step: number) => {
     const newIndex = currentIndex + step;
     if (newIndex <= 0 || newIndex > totalQuestions) return;
-    console.log("Changing question:", newIndex);
-    console.log("Current user answers before change:", userAnswers);
     setUserAnswers((prev) => ({ ...prev, [currentIndex]: options }));
     setCurrentIndex(newIndex);
     setOptions(questions[newIndex - 1].answers);
-    console.log("Options after changing question:", options);
   };
 
   const handleEndQuiz = () => {
-    console.log("Ending quiz, current answers:", userAnswers);
     setUserAnswers(prev => {
       const newUserAnswers = { ...prev, [currentIndex]: options };
-      console.log("User answers after updating:", newUserAnswers);
       const userScores = compareAnswers(newUserAnswers, questions);
-      console.log("Inputs to compareAnswers:", newUserAnswers, questions);
-      console.log("Outputs from compareAnswers:", userScores);
-      console.log("User scores:", userScores);
-      if(userScores.scoreC - userScores.scoreA > 7) {
-        if(userScores.scoreD - userScores.scoreB > 6) {
-          setKolb('收斂型')
+      if (userScores.scoreC - userScores.scoreA > 7) {
+        if (userScores.scoreD - userScores.scoreB > 6) {
+          setKolb('收斂型');
         } else {
-          setKolb('同化型')
+          setKolb('同化型');
         }
       } else {
-        if(userScores.scoreD - userScores.scoreB > 6) {
-          setKolb('調適型')
+        if (userScores.scoreD - userScores.scoreB > 6) {
+          setKolb('調適型');
         } else {
-          setKolb('分散型')
+          setKolb('分散型');
         }
       }
-      console.log(kolb);
       return newUserAnswers;
     });
     setFinish(true);
   }
 
-  // Reorder logic when the drag ends
+  const handleDragStart = (index: number) => {
+    setDraggedIndex(index);
+    setIsDragging(true);
+  };
+
+  const handleDragEnd = () => {
+    setIsDragging(false);
+  };
+
   const handleOnDragEnd = useCallback((startIndex: number, finishIndex: number) => {
     setOptions((prevOptions) => reorder({ list: prevOptions, startIndex, finishIndex }));
+    setDraggedIndex(null);
+    setHoveredIndex(null);
+    handleDragEnd(); // Reset the dragging state
   }, []);
+
+  const handleDragOver = (index: number) => {
+    setHoveredIndex(index);
+  };
 
   const sizeWidthNow =
       size.width > 1024 ? (size.height > 1000 ? "pt-40" : "") : "";
@@ -134,14 +133,17 @@ const Quiz = ({ questions, totalQuestions }: Props) => {
                               key={option}
                               data-index={index}
                               draggable
-                              onDragStart={(e) => e.dataTransfer.setData('text/plain', String(index))}
-                              onDragOver={(e) => e.preventDefault()}
+                              onDragStart={() => handleDragStart(index)}
+                              onDragOver={(e) => {
+                                e.preventDefault();
+                                handleDragOver(index);
+                              }}
                               onDrop={(e) => {
-                                const startIndex = Number(e.dataTransfer.getData('text/plain'));
+                                const startIndex = draggedIndex!;
                                 handleOnDragEnd(startIndex, index);
                               }}
-                              style={getItemStyle(false, {})}
-                              className="shadow-lg rounded-full m-4 text-slate-200 p-4"
+                              style={getItemStyle(false, {}, hoveredIndex === index)}
+                              className={`shadow-lg rounded-full m-4 text-slate-200 p-4 ${isDragging ? 'picked-up' : ''}`}
                           >
                             {option}
                           </li>
@@ -165,7 +167,7 @@ const Quiz = ({ questions, totalQuestions }: Props) => {
                 {finish && <Button text="上傳資料"
                                    onClick={() => {
                                      update(kolb);
-                                     router.push('/dashboard')
+                                     router.push('/dashboard');
                                    }}/>}
               </div>
             </div>
@@ -185,14 +187,13 @@ const Quiz = ({ questions, totalQuestions }: Props) => {
               {finish && <Button text="上傳資料"
                                  onClick={() => {
                                    update(kolb);
-                                   router.push('/dashboard')
+                                   router.push('/dashboard');
                                  }} />}
             </div>
           </div>
         </div>
       </div>
   );
-
 };
 
 export default Quiz;
