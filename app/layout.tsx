@@ -2,6 +2,7 @@ import './globals.css';
 import { Inter } from 'next/font/google';
 import AppBar from "@/components/AppBar";
 import Providers from "@/components/Providers";
+import type { Viewport } from 'next'
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -11,9 +12,14 @@ export const metadata = {
     generator: "Next.js",
     manifest: "/manifest.json",
     keywords: ["ntu-nurse"],
-    viewport:
-        "minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, viewport-fit=cover",
-};
+}
+export const viewport: Viewport = {
+    width: 'device-width',
+    minimumScale: 1,
+    initialScale: 1,
+    maximumScale: 1,
+    viewportFit: 'cover',
+}
 
 export default function RootLayout({
                                        children,
