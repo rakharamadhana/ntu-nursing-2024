@@ -7,8 +7,6 @@ const LoginButton = () => {
     const { data: session } = useSession();
     const router = useRouter();
 
-    console.log(JSON.stringify(session));
-
     return (
         <div className="ml-auto flex gap-2">
             {session?.user ? (
