@@ -16,7 +16,7 @@ export async function POST(request: Request) {
   }
 
   const body = await request.json();
-  const { docID, sheetID, currentUser: bodyUser } = body;
+  const { docID, sheetID, currentUser: bodyUser, columnName } = body;
 
   // Check if the currentUser is passed from the body, otherwise fallback to getCurrentUser
   const currentUser = bodyUser || await getCurrentUser();
@@ -39,9 +39,12 @@ export async function POST(request: Request) {
       const sheet = doc.sheetsById[sheetID];
       const rows = await sheet.getRows();
 
-      // Extract specific data from the rows
+      // Extract specific data from the rows based on dynamic column name
       for (let row of rows) {
-        data.push(row.get("3. 學號")); // Adjust this to match your column name
+        const value = row.get(columnName); // Use dynamic column name from the request
+        if (value) {
+          data.push(value);
+        }
       }
 
       const result = data.includes(currentUser.studentId)
