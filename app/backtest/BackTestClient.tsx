@@ -34,10 +34,10 @@ const BackTestClient = ({ className, ...props }: CardProps) => {
     // const firstFormStatus = await checkForm('10zc_emnqq3l7VvHrWXUvxnU9mRAiK90PX7zSfqKlozY', 1806269592);
     setFinishFirstForm(true);
 
-    const secondFormStatus = await checkForm('11e8by4T9867enL7FHH_-inZF-6jOp0RiNVdFC40I_bY', 256080489);
+    const secondFormStatus = await checkForm('11e8by4T9867enL7FHH_-inZF-6jOp0RiNVdFC40I_bY', 256080489, "3. 學號");
     setFinishSecondForm(secondFormStatus);
 
-    const thirdStatus = await checkForm('1zUphburapJepFt5ID7xPQBWDS-cNUq2Oy-E3HdTbq7Q', 282545185);
+    const thirdStatus = await checkForm('1zUphburapJepFt5ID7xPQBWDS-cNUq2Oy-E3HdTbq7Q', 282545185, "3. 學號");
     setFinishThirdForm(thirdStatus);
 
     setChecked(true);

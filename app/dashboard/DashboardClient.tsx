@@ -50,13 +50,15 @@ const DashboardClient = ({ className, ...props }: CardProps) => {
   const checkAllForms = async () => {
     const firstFormStatus = await checkForm(
       "10zc_emnqq3l7VvHrWXUvxnU9mRAiK90PX7zSfqKlozY",
-      1806269592
+      1806269592,
+        "3. 學號"
     );
     // setFinishFirstForm(firstFormStatus);
 
     const secondFormStatus = await checkForm(
       "1FYiiLRMpdpzEC-3Y47IlYEcaT-b59D5wMp5hMzu5YQY",
-      1088244461
+      1088244461,
+        "3. 學號"
     );
     // setFinishSecondForm(secondFormStatus);
 
