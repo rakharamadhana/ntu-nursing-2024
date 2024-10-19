@@ -1,9 +1,11 @@
 "use client";
 
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { reorder } from '@atlaskit/pragmatic-drag-and-drop/reorder';
+import { reorder } from "@atlaskit/pragmatic-drag-and-drop/reorder";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEllipsisV } from "@fortawesome/free-solid-svg-icons";
 import Button from "@/components/Button/Button";
 import compareAnswers from "./compareAnswers";
 import { QuestionsState } from "@/types/quiz";
@@ -26,15 +28,17 @@ const getItemStyle = (isDragging: any, draggableStyle: any, isDraggingOver: bool
 const getListStyle = (isDraggingOver: any) => ({
   background: isDraggingOver ? "rgb(248 250 252)" : "rgb(248 250 252)",
   padding: grid,
-  width: 250,
+  width: 300,
 });
 
 const Quiz = ({ questions, totalQuestions }: Props) => {
-  const [kolb, setKolb] = useState('');
+  const [kolb, setKolb] = useState("");
   const [currentIndex, setCurrentIndex] = useState(1);
   const [options, setOptions] = useState(questions[0].answers);
   const [userAnswers, setUserAnswers] = useState<Record<number, string[]>>({});
   const [finish, setFinish] = useState(false);
+  const [menuIndex, setMenuIndex] = useState<number | null>(null);
+  const menuRef = useRef<HTMLDivElement | null>(null); // Specify type for TypeScript
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const size = useWindowSize();
@@ -43,12 +47,11 @@ const Quiz = ({ questions, totalQuestions }: Props) => {
 
   const update = async (type: string) => {
     try {
-      const res = await fetch('/api/user/kolb', {
-        method: 'POST',
+      await fetch("/api/user/kolb", {
+        method: "POST",
         body: JSON.stringify({ kolb }),
-        headers: { 'Content-Type': 'application/json' },
+        headers: { "Content-Type": "application/json" },
       });
-      const data = await res.json();
     } catch (error: any) {
       console.error("Error updating data:", error);
     }
@@ -63,26 +66,26 @@ const Quiz = ({ questions, totalQuestions }: Props) => {
   };
 
   const handleEndQuiz = () => {
-    setUserAnswers(prev => {
+    setUserAnswers((prev) => {
       const newUserAnswers = { ...prev, [currentIndex]: options };
       const userScores = compareAnswers(newUserAnswers, questions);
       if (userScores.scoreC - userScores.scoreA > 7) {
         if (userScores.scoreD - userScores.scoreB > 6) {
-          setKolb('收斂型');
+          setKolb("收斂型");
         } else {
-          setKolb('同化型');
+          setKolb("同化型");
         }
       } else {
         if (userScores.scoreD - userScores.scoreB > 6) {
-          setKolb('調適型');
+          setKolb("調適型");
         } else {
-          setKolb('分散型');
+          setKolb("分散型");
         }
       }
       return newUserAnswers;
     });
     setFinish(true);
-  }
+  };
 
   const handleDragStart = (index: number) => {
     setDraggedIndex(index);
@@ -104,12 +107,59 @@ const Quiz = ({ questions, totalQuestions }: Props) => {
     setHoveredIndex(index);
   };
 
-  const sizeWidthNow =
-      size.width > 1024 ? (size.height > 1000 ? "pt-40" : "") : "";
+  // Movement functions
+  const moveItem = (fromIndex: number, toIndex: number) => {
+    setOptions((prevOptions) => reorder({ list: prevOptions, startIndex: fromIndex, finishIndex: toIndex }));
+    setMenuIndex(null); // Close the menu after movement
+  };
+
+  const handleMoveUp = (index: number) => {
+    if (index > 0) moveItem(index, index - 1);
+  };
+
+  const handleMoveDown = (index: number) => {
+    if (index < options.length - 1) moveItem(index, index + 1);
+  };
+
+  const handleMoveToTop = (index: number) => {
+    if (index > 0) moveItem(index, 0);
+  };
+
+  const handleMoveToBottom = (index: number) => {
+    if (index < options.length - 1) moveItem(index, options.length - 1);
+  };
+
+  const sizeWidthNow = size.width > 1024 ? (size.height > 1000 ? "pt-40" : "") : "";
+
+  const handleClickOutside = (event: MouseEvent) => {
+    // Check if the click is outside the menu
+    if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+      setMenuIndex(null);
+    }
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
+      // Check if the click is outside the menu
+      const target = event.target as HTMLElement; // Cast target to HTMLElement
+      if (menuRef.current && !menuRef.current.contains(target)) {
+        setMenuIndex(null);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("touchstart", handleClickOutside); // Add touch event listener
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside); // Clean up touch event listener
+    };
+  }, []);
+
 
   if (!finish) {
     return (
-        <div className=" text-black text-center justify-center sm:px-10 ">
+        <div className="text-black text-center justify-center sm:px-10">
           <div className={sizeWidthNow}>
             <div className="rounded-lg bg-slate-100 px-10 gap-5 sm:shadow-lg flex flex-col justify-center">
               <p className="text-black font-bold text-[16px] pt-5">
@@ -121,54 +171,83 @@ const Quiz = ({ questions, totalQuestions }: Props) => {
               <div className="flex flex-row justify-center">
                 <div className="flex flex-col justify-evenly text-gray-400">
                   <p>最像</p>
-                  <Image src="/down.png" alt="down" width={100} height={100}></Image>
+                  <Image src="/down.png" alt="down" width={100} height={100}/>
                   <p>最不像</p>
                 </div>
-                <div className="p-10 flex flex-col justify-center">
-                  <p className="text-gray-400">選項拖曳區</p>
-                  <div className="flex justify-center">
-                    <ul style={getListStyle(false)} className="rounded-lg justify-center">
-                      {options.map((option, index) => (
-                          <li
-                              key={option}
-                              data-index={index}
-                              draggable
-                              onDragStart={() => handleDragStart(index)}
-                              onDragOver={(e) => {
-                                e.preventDefault();
-                                handleDragOver(index);
-                              }}
-                              onDrop={(e) => {
-                                const startIndex = draggedIndex!;
-                                handleOnDragEnd(startIndex, index);
-                              }}
-                              style={getItemStyle(false, {}, hoveredIndex === index)}
-                              className={`shadow-lg rounded-full m-4 text-slate-200 p-4 ${isDragging ? 'picked-up' : ''}`}
-                          >
-                            {option}
-                          </li>
-                      ))}
-                    </ul>
-                  </div>
+                <div className="flex justify-center">
+                  <ul style={getListStyle(false)} className="rounded-lg justify-center">
+                    {options.map((option, index) => (
+                        <li
+                            key={option}
+                            data-index={index}
+                            draggable
+                            onDragStart={() => handleDragStart(index)}
+                            onDragOver={(e) => {
+                              e.preventDefault();
+                              handleDragOver(index);
+                            }}
+                            onDrop={(e) => {
+                              const startIndex = draggedIndex!;
+                              handleOnDragEnd(startIndex, index);
+                            }}
+                            style={getItemStyle(false, {}, hoveredIndex === index)}
+                            className={`shadow-lg rounded-full m-4 text-slate-200 p-4 flex items-center relative`}
+                        >
+                          <span className="flex-grow text-center">{option}</span> {/* Center the text */}
+                          <div
+                              className="p-2 rounded-full w-[2rem] flex text-center justify-evenly cursor-pointer transition duration-100 hover:bg-cyan-500 active:bg-cyan-700"
+                              onClick={() => setMenuIndex(menuIndex === index ? null : index)}> {/* Allocate space for the icon */}
+                            <FontAwesomeIcon
+                                icon={faEllipsisV}
+                            />
+                          </div>
+                          {menuIndex === index && (
+                              <div
+                                  ref={menuRef} // Attach the ref here
+                                  className="absolute border border-cyan-500 top-0 -right-14 bg-gray-800 bg-opacity-95 rounded-xl shadow-md p-3 mt-12 flex flex-col space-y-4 z-10 transition-all ">
+                                <button
+                                    className={`p-2 rounded transition-transform duration-200 transform ${index === 0 ? 'text-gray-400 cursor-not-allowed' : 'hover:bg-gray-700 hover:scale-105 '}`}
+                                    onClick={() => handleMoveToTop(index)}
+                                    disabled={index === 0}
+                                >移至頂部
+                                </button>
+                                <button
+                                    className={`p-2 rounded transition-transform duration-200 transform ${index === 0 ? 'text-gray-400 cursor-not-allowed' : 'hover:bg-gray-700 hover:scale-105 '}`}
+                                    onClick={() => handleMoveUp(index)}
+                                    disabled={index === 0}
+                                >上移一格
+                                </button>
+                                <button
+                                    className={`p-2 rounded transition-transform duration-200 transform ${index === options.length - 1 ? 'text-gray-400 cursor-not-allowed' : 'hover:bg-gray-700 hover:scale-105 '}`}
+                                    onClick={() => handleMoveDown(index)}
+                                    disabled={index === options.length - 1} // Disable if at the bottom
+                                >下移一格
+                                </button>
+                                <button
+                                    className={`p-2 rounded transition-transform duration-200 transform ${index === options.length - 1 ? 'text-gray-400 cursor-not-allowed' : 'hover:bg-gray-700 hover:scale-105 '}`}
+                                    onClick={() => handleMoveToBottom(index)}
+                                    disabled={index === options.length - 1} // Disable if at the bottom
+                                >移至底部
+                                </button>
+                              </div>
+                          )}
+                        </li>
+                    ))}
+                  </ul>
                 </div>
               </div>
               <div className="flex justify-center gap-6 pb-10">
                 {!finish && <Button text="上一題" onClick={() => handleChangeQuestion(-1)}/>}
-                {!finish && <Button
-                    text={currentIndex === totalQuestions ? "結束" : "下一題"}
-                    onClick={
-                      currentIndex === totalQuestions
-                          ? () => {
-                            handleEndQuiz();
-                          }
-                          : () => handleChangeQuestion(1)
-                    }
-                />}
-                {finish && <Button text="上傳資料"
-                                   onClick={() => {
-                                     update(kolb);
-                                     router.push('/dashboard');
-                                   }}/>}
+                {!finish && (
+                    <Button
+                        text={currentIndex === totalQuestions ? "結束" : "下一題"}
+                        onClick={
+                          currentIndex === totalQuestions
+                              ? handleEndQuiz
+                              : () => handleChangeQuestion(1)
+                        }
+                    />
+                )}
               </div>
             </div>
           </div>
@@ -177,18 +256,20 @@ const Quiz = ({ questions, totalQuestions }: Props) => {
   }
 
   return (
-      <div className=" text-black text-center justify-center sm:px-10 ">
+      <div className="text-black text-center justify-center sm:px-10">
         <div className={sizeWidthNow}>
           <div className="rounded-lg bg-slate-100 px-10 gap-5 sm:shadow-lg flex flex-col justify-center">
-            <p className="text-black font-bold text-[16px] py-10">
-              測試結果為：{kolb}
-            </p>
+            <p className="text-black font-bold text-[16px] py-10">測試結果為：{kolb}</p>
             <div className="flex justify-center gap-6 pb-10">
-              {finish && <Button text="上傳資料"
-                                 onClick={() => {
-                                   update(kolb);
-                                   router.push('/dashboard');
-                                 }} />}
+              {finish && (
+                  <Button
+                      text="上傳資料"
+                      onClick={() => {
+                        update(kolb);
+                        router.push("/dashboard");
+                      }}
+                  />
+              )}
             </div>
           </div>
         </div>
