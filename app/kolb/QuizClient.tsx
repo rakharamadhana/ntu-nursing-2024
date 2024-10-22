@@ -44,6 +44,7 @@ const Quiz = ({ questions, totalQuestions }: Props) => {
   const size = useWindowSize();
   const router = useRouter();
   const [isDragging, setIsDragging] = useState(false);
+  const [userScores, setUserScores] = useState({ scoreA: 0, scoreB: 0, scoreC: 0, scoreD: 0 });
 
   const update = async (type: string) => {
     try {
@@ -95,13 +96,18 @@ const Quiz = ({ questions, totalQuestions }: Props) => {
       // Log the new user answers
       console.log("New User Answers:", newUserAnswers);
 
-      const userScores = compareAnswers(newUserAnswers, questions);
+      // Calculate user scores with the final answers
+      const calculatedScores = compareAnswers(newUserAnswers, questions);
 
       // Log the scores returned from compareAnswers
-      console.log("User Scores:", userScores);
+      console.log("User Scores:", calculatedScores);
 
-      if (userScores.scoreC - userScores.scoreA > 7) {
-        if (userScores.scoreD - userScores.scoreB > 6) {
+      // Set the user scores state
+      setUserScores(calculatedScores);
+
+      // Determine Kolb type based on scores
+      if (calculatedScores.scoreC - calculatedScores.scoreA > 7) {
+        if (calculatedScores.scoreD - calculatedScores.scoreB > 6) {
           setKolb("收斂型");
           console.log("Kolb Type Set To: 收斂型");
         } else {
@@ -109,7 +115,7 @@ const Quiz = ({ questions, totalQuestions }: Props) => {
           console.log("Kolb Type Set To: 同化型");
         }
       } else {
-        if (userScores.scoreD - userScores.scoreB > 6) {
+        if (calculatedScores.scoreD - calculatedScores.scoreB > 6) {
           setKolb("調適型");
           console.log("Kolb Type Set To: 調適型");
         } else {
@@ -297,7 +303,19 @@ const Quiz = ({ questions, totalQuestions }: Props) => {
       <div className="text-black text-center justify-center sm:px-10">
         <div className={sizeWidthNow}>
           <div className="rounded-lg bg-slate-100 px-10 gap-5 sm:shadow-lg flex flex-col justify-center">
-            <p className="text-black font-bold text-[16px] py-10">測試結果為：{kolb}</p>
+            <p className="text-black font-bold text-[16px] py-5">測試結果為：{kolb}</p>
+
+            {finish && (
+                <div className="pb-2 text-center">
+                  <ul>
+                    <li>CE: {userScores.scoreA}</li>
+                    <li>RO: {userScores.scoreB}</li>
+                    <li>AC: {userScores.scoreC}</li>
+                    <li>AE: {userScores.scoreD}</li>
+                  </ul>
+                </div>
+            )}
+
             <div className="flex justify-center gap-6 pb-10">
               {finish && (
                   <Button
