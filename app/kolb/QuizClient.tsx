@@ -59,33 +59,71 @@ const Quiz = ({ questions, totalQuestions }: Props) => {
 
   const handleChangeQuestion = (step: number) => {
     const newIndex = currentIndex + step;
-    if (newIndex <= 0 || newIndex > totalQuestions) return;
-    setUserAnswers((prev) => ({ ...prev, [currentIndex]: options }));
+
+    // Debugging: Log the current index and the new index
+    console.log("Current Index:", currentIndex);
+    console.log("New Index:", newIndex);
+
+    if (newIndex <= 0 || newIndex > totalQuestions) {
+      // Debugging: Log if the new index is out of bounds
+      console.log("Index out of bounds. Returning without changing question.");
+      return;
+    }
+
+    // Save the current options to user answers
+    setUserAnswers((prev) => {
+      const updatedAnswers = { ...prev, [currentIndex]: options };
+      // Debugging: Log the updated user answers
+      console.log("Updated User Answers:", updatedAnswers);
+      return updatedAnswers;
+    });
+
+    // Update the current index and options
     setCurrentIndex(newIndex);
-    setOptions(questions[newIndex - 1].answers);
+    const nextOptions = questions[newIndex - 1].answers;
+    setOptions(nextOptions);
   };
 
   const handleEndQuiz = () => {
+    // Log the current index and options before updating the user answers
+    console.log("Current Index:", currentIndex);
+    console.log("Selected Options:", options);
+
     setUserAnswers((prev) => {
       const newUserAnswers = { ...prev, [currentIndex]: options };
+
+      // Log the new user answers
+      console.log("New User Answers:", newUserAnswers);
+
       const userScores = compareAnswers(newUserAnswers, questions);
+
+      // Log the scores returned from compareAnswers
+      console.log("User Scores:", userScores);
+
       if (userScores.scoreC - userScores.scoreA > 7) {
         if (userScores.scoreD - userScores.scoreB > 6) {
           setKolb("收斂型");
+          console.log("Kolb Type Set To: 收斂型");
         } else {
           setKolb("同化型");
+          console.log("Kolb Type Set To: 同化型");
         }
       } else {
         if (userScores.scoreD - userScores.scoreB > 6) {
           setKolb("調適型");
+          console.log("Kolb Type Set To: 調適型");
         } else {
           setKolb("分散型");
+          console.log("Kolb Type Set To: 分散型");
         }
       }
       return newUserAnswers;
     });
+
     setFinish(true);
+    console.log("Quiz Finished:", finish);
   };
+
 
   const handleDragStart = (index: number) => {
     setDraggedIndex(index);
