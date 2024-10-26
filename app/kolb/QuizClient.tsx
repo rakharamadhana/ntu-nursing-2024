@@ -313,6 +313,10 @@ const Quiz = ({ questions, totalQuestions }: Props) => {
                     <li>AC: {userScores.scoreC}</li>
                     <li>AE: {userScores.scoreD}</li>
                   </ul>
+                  <ul>
+                    <li>AC - CE: {userScores.scoreC - userScores.scoreA}</li>
+                    <li>AE - RO: {userScores.scoreD - userScores.scoreB}</li>
+                  </ul>
                 </div>
             )}
 
