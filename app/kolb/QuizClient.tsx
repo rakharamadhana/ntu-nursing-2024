@@ -302,20 +302,20 @@ const Quiz = ({ questions, totalQuestions }: Props) => {
   return (
       <div className="text-black text-center justify-center sm:px-10">
         <div className={sizeWidthNow}>
-          <div className="rounded-lg bg-slate-100 px-10 gap-5 sm:shadow-lg flex flex-col justify-center">
-            <p className="text-black font-bold text-[16px] py-5">測試結果為：{kolb}</p>
+          <div className="rounded-lg bg-slate-100 px-10 gap-2 sm:shadow-lg flex flex-col justify-center">
+            <p className="text-black font-bold text-[16px] pt-5 pb-3">測試結果為：{kolb}</p>
 
             {finish && (
-                <div className="pb-2 text-center">
-                  <ul>
+                <div className="text-center pb-3">
+                  <ul className="pb-3">
                     <li>CE: {userScores.scoreA}</li>
                     <li>RO: {userScores.scoreB}</li>
                     <li>AC: {userScores.scoreC}</li>
                     <li>AE: {userScores.scoreD}</li>
                   </ul>
-                  <ul>
-                    <li>AC - CE: {userScores.scoreC - userScores.scoreA}</li>
-                    <li>AE - RO: {userScores.scoreD - userScores.scoreB}</li>
+                  <ul className="pb-3">
+                    <li>AC ({userScores.scoreC}) - CE ({userScores.scoreA}): {userScores.scoreC - userScores.scoreA}</li>
+                    <li>AE ({userScores.scoreD}) - RO ({userScores.scoreB}): {userScores.scoreD - userScores.scoreB}</li>
                   </ul>
                 </div>
             )}
